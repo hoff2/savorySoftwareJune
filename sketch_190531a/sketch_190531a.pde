@@ -16,8 +16,9 @@ void rectangleAtTheBottom(float x, float w, float h) {
 void draw() {
   // Set background color, noStroke and fill color
   background(227, 167, 232);
-  noStroke();
+  stroke(0,0,0);
   
   fill(43, 63, 114);
-  rectangleAtTheBottom(30, 55, 75);
+  rectangleAtTheBottom(30, 100, 200);
+  rectangleAtTheBottom(130, 90, 150);
 }
