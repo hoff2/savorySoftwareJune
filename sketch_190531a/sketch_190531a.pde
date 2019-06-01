@@ -1,7 +1,9 @@
 import processing.sound.*;
+import ddf.minim.*;
+import ddf.minim.analysis.*;
 
-SoundFile song;
-Amplitude rms;
+AudioPlayer song;
+//Amplitude rms;
 
 class Window {
   public float x;
@@ -36,7 +38,7 @@ class Building {
   }
   
   public void drawWindow(Window w) {
-    float wcf = rms.analyze();
+    float wcf = song.left.level() *  3;
     fill(249 * wcf, 215 * wcf, 77 * wcf);
     
     rect(
@@ -57,23 +59,33 @@ class Building {
 }
 
 ArrayList<Building> buildings;
-  
+BeatDetect beat;
+int bandCount = 0;
+Minim minim;
+    int buildingsTimer = 0;
 
 void setup() {
+  minim = new Minim(this);
   size(1040, 800);
-  song = new SoundFile(this, "goodbye.mp3");
-  song.loop();
-  rms = new Amplitude(this);
-  rms.input(song);
+  song = minim.loadFile("goodbye.mp3", 2048);
+  song.play();
+  //rms = new Amplitude(this);
+  //rms.input(song.mix);
   createBuildings();
+  beat = new BeatDetect();
+  beat.detectMode(BeatDetect.FREQ_ENERGY);
+  beat.setSensitivity(500);
+  bandCount = beat.detectSize();
+   buildingsTimer = 0;
+
 }      
 
 void createBuildings(){
   buildings = new ArrayList<Building>();
   for(int i =0; i < 10; i++){
-    float randomX = random(0, width);
-    float randomW = abs(randomGaussian() * 7) + 2;
-    float randomH = abs(randomGaussian() * 11) + 3;
+    float randomW = floor(abs(randomGaussian() * 5)) + 2;
+    float randomH = floor(abs(randomGaussian() * 9)) + 3;
+    float randomX = random(0, width + 50) - 50;
     Building b = new Building(randomX, randomW, randomH);
     b.addWindow(1, 3);
     buildings.add(b);
@@ -81,8 +93,19 @@ void createBuildings(){
 }
 
 void draw() {
+    beat.detect(song.mix);
+    buildingsTimer++;
+      if(buildingsTimer % 11 == 0){
+        createBuildings();
+        buildingsTimer = 0;
+      }
+    
+    
+  
   // Set background color, noStroke and fill color
   background(227, 167, 232);
+  
+  
     for (int i = 0; i < buildings.size(); i++) {
       buildings.get(i).draw();
     }
