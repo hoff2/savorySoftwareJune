@@ -8,11 +8,16 @@ void setup() {
   //song.loop();
 }      
 
+void rectangleAtTheBottom(float x, float w, float h) {
+  float y = 800 - h;
+  rect(x, y, w, h);
+}
+
 void draw() {
   // Set background color, noStroke and fill color
   background(0, 0, 255);
   noStroke();
   fill(255, 0, 150);
   
-  rect(30, 20, 55, 55);
+  rectangleAtTheBottom(30, 55, 75);
 }
