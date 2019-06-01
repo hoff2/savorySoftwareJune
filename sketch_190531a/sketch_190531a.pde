@@ -38,7 +38,7 @@ class Building {
   }
   
   public void drawWindow(Window w) {
-    float wcf = song.left.level() *  3;
+    float wcf = song.left.level() *  2;
     fill(249 * wcf, 215 * wcf, 77 * wcf);
     
     rect(
@@ -83,11 +83,16 @@ void setup() {
 void createBuildings(){
   buildings = new ArrayList<Building>();
   for(int i =0; i < 10; i++){
-    float randomW = floor(abs(randomGaussian() * 5)) + 2;
-    float randomH = floor(abs(randomGaussian() * 9)) + 3;
+    int randomW = floor(abs(randomGaussian() * 5)) + 2;
+    int randomH = floor(abs(randomGaussian() * 9)) + 3;
     float randomX = random(0, width + 50) - 50;
     Building b = new Building(randomX, randomW, randomH);
-    b.addWindow(1, 3);
+    int nw = floor(abs(randomGaussian() * 2)) + 1;
+    for (int j = 0; j < nw; j++) {
+    int wx = floor(random(1, randomW));
+    int wy = floor(random(1, randomH));
+    b.addWindow(wx, wy);
+    }
     buildings.add(b);
   }
 }
