@@ -56,26 +56,34 @@ class Building {
   }
 }
 
+ArrayList<Building> buildings;
+  
+
 void setup() {
   size(1040, 800);
   song = new SoundFile(this, "goodbye.mp3");
   song.loop();
   rms = new Amplitude(this);
   rms.input(song);
+  createBuildings();
 }      
 
 void createBuildings(){
-  Building b = new Building(30, 7, 8);
-  b.addWindow(1, 3);
-  Building c = new Building(150, 5, 7);
-  c.addWindow(1, 1);
-  b.draw();
-  c.draw();
+  buildings = new ArrayList<Building>();
+  for(int i =0; i < 10; i++){
+    float randomX = random(0, width);
+    float randomW = abs(randomGaussian() * 7) + 2;
+    float randomH = abs(randomGaussian() * 11) + 3;
+    Building b = new Building(randomX, randomW, randomH);
+    b.addWindow(1, 3);
+    buildings.add(b);
+  }
 }
 
 void draw() {
   // Set background color, noStroke and fill color
   background(227, 167, 232);
-
-  createBuildings();
+    for (int i = 0; i < buildings.size(); i++) {
+      buildings.get(i).draw();
+    }
 }
